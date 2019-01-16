@@ -5,7 +5,7 @@ const bot = client;
 const xp = require("./xp.json");
 const prefix = "d!"
 
-client.login('NTM1MTA2ODA5NzQ1MTEzMDg5.DyDbnQ.vOyPbJAaP6Uqo3etvBzWKrTzImU');
+client.login(process.env.TOKEN);
 
 client.on("ready", async () => {
 
