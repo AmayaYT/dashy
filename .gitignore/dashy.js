@@ -5,13 +5,14 @@ const bot = client;
 const xp = require("./xp.json");
 const prefix = "d!"
 
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN)
 
 client.on("ready", async () => {
 
 	// Console
 
   console.log(`\n\nConnection ========== \nConnecté en tant que ${client.user.tag} !(ID : ${client.user.id})\n=====================`)
+  	console.log('\n==========\nPrefix : d!\n==========')
 
 	// Game
 
@@ -34,13 +35,24 @@ client.on("ready", async () => {
 
 });
 
-bot.on("message", async msg => {
+client.on("message", async msg => {
 
 let message = msg;
 if(message.author.bot) return;
 let msgArray = msg.content.split(" ");
 let args = msgArray.slice(1);
 
+	// Help
+	if(msg.content.startsWith(prefix + "help")) {
+	const embed = new Discord.RichEmbed()
+	.setAuthor(client.user.tag, client.user.displayAvatarURL)
+	.setDescription(`Commande \`help\`.`)
+	.addField('**d!suggestion**', 'Envoyer une suggestion pour le serveur !')
+	.addField('**d!report**', 'Pour reporter un utilisateur du serveur.')
+	.addField('**d!level**', 'Pour voir ton niveau sur le serveur !')
+	.setFooter(`Demandée par ${msg.author.tag} !`)
+	message.channel.send(embed)
+}
 
 
 	// Suggestion
@@ -87,54 +99,4 @@ let args = msgArray.slice(1);
   .setTimestamp()
 	reportses.send(reportEmbed);
 }
-	// XP & Levels
-  let xpAdd = Math.floor(Math.random() * 3) + 1;
-  console.log(xpAdd)
-
-  if(!xp[message.author.id]){
-    xp[message.author.id] = {
-      xp: 0,
-      level: 0
-    };
-  }
-
-
-  let curxp = xp[message.author.id].xp;
-  let curlvl = xp[message.author.id].level;
-  let nxtLvl = xp[message.author.id].level * 300;
-  xp[message.author.id].xp =  curxp + xpAdd;
-  if(nxtLvl <= xp[message.author.id].xp){
-    xp[message.author.id].level = curlvl + 1;
-	let levelUp = curlvl + 1
-	let levelses = client.channels.find(`name`, "commandes")
-    levelses.send(`:white_check_mark: Bien joué **${msg.author}**, tu viens de passer **__niveau ${levelUp}__** !`)
-  }
-  fs.writeFile("./xp.json", JSON.stringify(xp), (err) => {
-    if(err) console.log(err)
-	});
-
-if(message.content.startsWith(prefix + "level")) {
-	  if(!xp[message.author.id]){
-   xp[message.author.id] = {
-     xp: 0,
-     level: 1
-  };
-}
-  let nxtLvlXp = curlvl * 300;
-  let difference = nxtLvlXp - curxp;
-
-  let lvlEmbed = new Discord.RichEmbed()
-  .setDescription('Ton XP sur le serveur **Dashy**')
-  .setThumbnail(msg.author.displayAvatarURL)
-  .setAuthor(client.user.tag)
-  .setFooter(`Demandée par ${msg.author.username} - Dashy`)
-  .setTimestamp()
-  .addField("Niveau", curlvl, true)
-  .addField("XP", curxp, true)
-  .addField(`XP manquant avant le niveau suivant`, `${difference} xp`);
-
-message.channel.send(lvlEmbed)
-
-
-	}
 });
