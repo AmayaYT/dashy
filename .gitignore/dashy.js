@@ -49,7 +49,6 @@ let args = msgArray.slice(1);
 	.setDescription(`Commande \`help\`.`)
 	.addField('**d!suggestion**', 'Envoyer une suggestion pour le serveur !')
 	.addField('**d!report**', 'Pour reporter un utilisateur du serveur.')
-	.addField('**d!level**', 'Pour voir ton niveau sur le serveur !')
 	.setFooter(`Demandée par ${msg.author.tag} !`)
 	message.channel.send(embed)
 }
